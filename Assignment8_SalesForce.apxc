@@ -1,0 +1,25 @@
+public class Demo {
+    
+    public static void hello() {
+        List<Integer> arr = new List<Integer>{1,2,3,4,5}; 
+        Integer target = 1;
+         Demo d = new Demo(); 
+        d.findele(arr, target, 5);
+    }
+
+    public void findele(List<Integer> arr, Integer target, Integer n) {
+        Integer f = 0;
+        for (Integer i = 0; i < n; i++) {
+            if (arr[i] == target) {
+                f = 1;
+                break;
+            }
+        }
+        if (f == 1) {
+            System.debug('Found');
+        } 
+        else {
+            System.debug('Not Found');
+        }
+    }
+}

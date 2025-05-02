@@ -2,61 +2,94 @@
 using namespace std;
 
 
-class graph{
-    public:
-    
-    unordered_map<int,vector<pair<int,int>>>adjlist; //  1-> {2,3}    node is 2 and weight is 3
 
-    void addnode(int u,int v,int wt){
-        adjlist[u].push_back({v,wt});
-        adjlist[v].push_back({u,wt});
+class Graph{
+
+    public:
+    unordered_map<int,vector<pair<int,int>>>adj;
+    void addnode(int u, int v,int wt){
+        adj[u].push_back({v,wt});
+        adj[v].push_back({u,wt});
     }
 
-    int min_spanning_tree(int src,int n,vector<int>&mst){
+
+    void print(){
+        for(auto i:adj){
+            cout<<i.first<<" : -> {";
+            for(auto j:i.second){
+                cout<<"("<<j.first<<","<<j.second<<") ";
+            }
+            cout<<" }"<<endl;
+        }
+    }
+
+    int mst(int src,int n,vector<int>&ans){
         int cost=0;
-        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq; // pair (wt,v)
-        pq.push({0,src});
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>q;
+        q.push({0,src}); //wt , v
         vector<int>vis(n,0);
-        while(!pq.empty()){
-            auto node=pq.top();
-            pq.pop();
-            int v=node.second;
+        while(!q.empty()){
+            auto node=q.top();
+            q.pop();
             int wt=node.first;
+            int v=node.second;
             if(vis[v]==1)continue;
             vis[v]=1;
             cost+=wt;
-            mst.push_back(v);
-            for(auto &it:adjlist[v]){
-                int nbr=it.first;
-                int nbr_wt=it.second;
-                if(vis[nbr]==0){
-                    pq.push({nbr_wt,nbr});
-                }
+            ans.push_back(v);
+            for(auto nbr:adj[v]){
+                q.push({nbr.second,nbr.first});
             }
         }
+
         return cost;
 
     }
 
+
+
+
+    void dijkstra(int src,int n,vector<int>&dist){
+        dist.assign(n,INT_MAX);
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>q;
+        q.push({0,src});
+        dist[src]=0;
+        while(!q.empty()){
+            auto node=q.top();
+            q.pop();
+            int d=node.first;
+            int u=node.second;
+            if(d>dist[u])continue;
+            for(auto nbr:adj[u]){
+                if(dist[u]+nbr.second<dist[nbr.first]){
+                    dist[nbr.first]=nbr.second+dist[u];
+                    q.push({dist[nbr.first],nbr.first});
+                }
+            }
+        }
+
+    }
+
+
+
 };
 
 
-
 void selection_sort(vector<int>&v){
-    int n=v.size();
-    for(int i=0;i<n;i++){
+    for(int i=0;i<v.size();i++){
         int val=v[i];
         int idx=i;
-        for(int j=i+1;j<n;j++){
-            if(val>v[j]){
+        for(int j=i+1;j<v.size();j++){
+            if(v[j]<val){
                 idx=j;
                 val=v[j];
             }
         }
-        swap(v[idx],v[i]);
+        if(i!=idx)swap(v[idx],v[i]);
     }
-    
 }
+
+
 
 
 
@@ -65,29 +98,25 @@ void selection_sort(vector<int>&v){
 
 int main(){
 
-    // graph g;
-    // int n=4;
-    // g.addnode(0,1,5);
-    // g.addnode(1,2,6);
-    // g.addnode(1,3,3);
-    // g.addnode(2,3,2);
-    // vector<int>mst;
-    // cout<<"Wt of mst : "<<g.min_spanning_tree(0,n,mst);
+    Graph g;
+    g.addnode(0,1,2);
+    g.addnode(1,2,5);
+    g.addnode(1,3,2);
+    g.addnode(2,3,1);
+    vector<int>ans;
+    // cout<<"cost of mst "<<g.mst(0,4,ans)<<endl;
+    // for(auto i:ans)cout<<i<<" ";
     // cout<<endl;
-    // for(auto i:mst)cout<<i<<" -> ";
-    // cout<<endl;
-
-    
-    //    5
-    // 0-----1
-    //     5/  \ 3
-    //      2---3
-    //        2
-
-    vector<int>v={2,1,8,4,5};
-    selection_sort(v);
-    for(auto i:v)cout<<i<<" ";
+    vector<int>dist;
+    int n=4;
+    g.dijkstra(0,n,dist);
+    for(auto i:dist)cout<<i<<" ";
     cout<<endl;
+    
+
+    // vector<int>v={2,4,0,3,9};
+    // selection_sort(v);
+    // for(auto i:v)cout<<i<<" ";
 
     return 0;
 }

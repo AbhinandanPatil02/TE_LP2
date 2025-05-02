@@ -48,12 +48,30 @@ public:
 
 int main() {
     graph g;
-    int n = 4; 
+    int n = 5; 
+
+
+
+    // g.addnode(0, 1);
+    // g.addnode(1, 2);
+    // g.addnode(2, 3);
+    // g.addnode(3, 0);
+    // g.addnode(0, 2); 
+//     5
+// 0 1
+// 0 4
+// 1 2
+// 2 4
+// 2 3
+// 3 4
     g.addnode(0, 1);
+    g.addnode(0, 4);
     g.addnode(1, 2);
-    g.addnode(2, 3);
-    g.addnode(3, 0);
-    g.addnode(0, 2); 
+    g.addnode(2, 4);
+    g.addnode(2, 3); 
+    g.addnode(3, 4); 
+
+
 
     int m = 3; 
 

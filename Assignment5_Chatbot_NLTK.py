@@ -1,54 +1,79 @@
-import nltk
-from nltk.chat.util import Chat, reflections
 
-# Define pattern-response pairs for Customer Interaction
-pairs = [
-    [
-        r".*\b(order|purchase)\b.*",
-        ["You can place your order on our website easily!", "Ordering is simple! Just visit our online store."]
-    ],
-    [
-        r".*\b(payment|pay)\b.*",
-        ["We accept credit cards, debit cards, and UPI payments.", "You can pay using online banking or cards."]
-    ],
-    [
-        r".*\b(delivery|shipping)\b.*",
-        ["Delivery usually takes 3-5 business days.", "We ship orders within 24 hours after confirmation."]
-    ],
-    [
-        r".*\b(return|refund)\b.*",
-        ["You can request a return within 7 days of delivery.", "Refunds are processed within 5 working days after approval."]
-    ],
-    [
-        r".*\b(help|support)\b.*",
-        ["Our customer support is available 24/7! You can call or email us.", "Need help? Just reach out through our Contact Us page."]
-    ],
-    [
-        r".*\b(hi|hello|hey)\b.*",
-        ["Hello! Welcome to our customer service. How can I assist you today?", "Hi there! How may I help you?"]
-    ],
-    [
-        r".*\b(thank you|thanks)\b.*",
-        ["You're welcome! Happy to help.", "Anytime! Let us know if you have more questions."]
-    ],
-    [
-        r".*\b(exit|quit|bye)\b.*",
-        ["Goodbye! Have a great day.", "Thank you for visiting us!"]
-    ],
-    [
-        r".*",
-        ["I'm sorry, I didn't understand that. Could you please rephrase?", "Hmm, can you please explain that a bit differently?"]
-    ]
-]
 
-# Chatbot runner
-def customer_service_chatbot():
-    print("======================================")
-    print(" Welcome to ShopEase Customer Service ")
-    print("======================================")
-    print("Type 'exit' or 'quit' to end the chat.\n")
-    chatbot = Chat(pairs, reflections)
-    chatbot.converse()
 
-if __name__ == "__main__":
-    customer_service_chatbot()
+from sentence_transformers import SentenceTransformer, util
+import torch
+import streamlit as st
+
+# Load model once
+@st.cache_resource
+def load_model():
+    return SentenceTransformer('paraphrase-MiniLM-L6-v2')
+
+model = load_model()
+
+# FAQ knowledge base
+faq_pairs = {
+    "What is your name?": "I'm a customer support assistant.",
+    "Do you offer refunds?": "Yes, we offer refunds within 30 days of purchase.",
+    "Tell me about the product.": "Can you specify which product you're interested in?",
+    "What is the price of the product?": "Please mention the product name for pricing details.",
+    "Hello": "Hi there! How can I assist you today?",
+    "Thank you": "You're welcome!",
+    "Bye": "Goodbye! Have a great day.",
+    "How can I track my order?": "You can track your order using the tracking link sent to your email after purchase.",
+    "Can I cancel my order?": "Yes, you can cancel your order within 24 hours of placing it.",
+    "What payment methods do you accept?": "We accept credit/debit cards, UPI, PayPal, and net banking.",
+    "Do you ship internationally?": "Yes, we offer international shipping to most countries.",
+    "How long does delivery take?": "Delivery typically takes 3-7 business days depending on your location.",
+    "Is there any warranty on the product?": "Yes, our products come with a 1-year warranty.",
+    "I forgot my password.": "You can reset your password using the 'Forgot Password' link on the login page.",
+    "Can I change my shipping address?": "Yes, please contact support within 12 hours of placing the order to change your address.",
+}
+
+# Encode questions once
+questions = list(faq_pairs.keys())
+question_embeddings = model.encode(questions, convert_to_tensor=True)
+
+def get_response(user_input):
+    user_embedding = model.encode(user_input, convert_to_tensor=True)
+    cosine_scores = util.pytorch_cos_sim(user_embedding, question_embeddings)
+    top_result = torch.argmax(cosine_scores)
+
+    if cosine_scores[0][top_result] > 0.6:
+        return faq_pairs[questions[top_result]]
+    else:
+        return "I'm sorry, I didn't understand that. Could you please rephrase?"
+
+# Initialize chat history
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+st.title("🧠 NLP Chatbot (BERT-powered)")
+
+# Display chat history
+for msg in st.session_state.messages:
+    with st.chat_message(msg["role"]):
+        st.markdown(msg["content"])
+
+# Chat input
+user_input = st.chat_input("Ask a question...")
+
+if user_input:
+    # Display user message
+    st.session_state.messages.append({"role": "user", "content": user_input})
+    with st.chat_message("user"):
+        st.markdown(user_input)
+
+    # Get bot response
+    response = get_response(user_input)
+    st.session_state.messages.append({"role": "assistant", "content": response})
+    with st.chat_message("assistant"):
+        st.markdown(response)
+
+
+
+
+
+
+

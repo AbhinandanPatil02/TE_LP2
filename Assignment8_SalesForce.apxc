@@ -1,25 +1,80 @@
-public class Demo {
-    
-    public static void hello() {
-        List<Integer> arr = new List<Integer>{1,2,3,4,5}; 
-        Integer target = 1;
-         Demo d = new Demo(); 
-        d.findele(arr, target, 5);
-    }
+public class Matrix_Addition {
 
-    public void findele(List<Integer> arr, Integer target, Integer n) {
-        Integer f = 0;
-        for (Integer i = 0; i < n; i++) {
-            if (arr[i] == target) {
-                f = 1;
-                break;
+    List<List<Integer>>add(List<List<Integer>>a,List<List<Integer>>b){
+        
+        Integer n=a.size();
+        Integer m=a[0].size();
+        List<List<Integer>>ans=new List<List<Integer>>();
+        for(Integer i=0;i<n;i++){
+            List<Integer>row=new List<Integer>();
+            for(Integer j=0;j<m;j++){
+                row.add(a[i][j]+b[i][j]);
             }
+            ans.add(row);
         }
-        if (f == 1) {
-            System.debug('Found');
-        } 
-        else {
-            System.debug('Not Found');
-        }
+        
+        return ans;
     }
+    
+     public List<List<Integer>>mul(List<List<Integer>>a,List<List<Integer>>b){
+		Integer n=a.size();
+        Integer m=a[0].size();
+        Integer s=b[0].size();
+        List<List<Integer>>ans=new List<List<Integer>>();   
+         for(Integer i=0;i<n;i++){
+             List<Integer>row=new List<Integer>();
+             for(Integer j=0;j<s;j++){
+                 row.add(0);
+             }
+             ans.add(row);
+         }
+         
+         for(Integer i=0;i<n;i++){
+             for(Integer j=0;j<m;j++){
+                 for(Integer k=0;k<s;k++){
+                     ans[i][j]=a[i][k]*b[k][j];
+                 }
+             }
+         }
+         
+        
+        return ans;
+    }
+    
+    Integer First_Hundred(){
+        Integer sum=0;
+        
+        for(Integer i=1;i<=100;i++){
+            sum+=i;
+        }
+        
+        return sum;
+    }
+    
+    
+   
+    
+    public Static void run(){
+        Matrix_Addition m=new Matrix_Addition();
+        List<List<Integer>>a=new List<List<Integer>>{
+            new List<Integer>{1,2,3},
+            new List<Integer>{3,2,1},
+            new List<Integer>{1,2,3}
+        };
+        List<List<Integer>>b=new List<List<Integer>>{
+            new List<Integer>{3,2,1},
+            new List<Integer>{1,2,3},
+            new List<Integer>{3,2,1}
+        };
+            
+        //System.debug(m.add(a,b));
+        //System.debug(m.mul(a,b));
+       
+            System.debug(m.First_Hundred());
+        
+        
+    }
+    
+    
+    
 }

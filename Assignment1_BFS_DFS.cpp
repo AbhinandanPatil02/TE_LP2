@@ -75,11 +75,12 @@ class Graph{
 
 int main(){
     Graph g;
-    int n=4;
+    int n=6;
     g.addnode(0,1);
+    g.addnode(0,3);
     g.addnode(1,2);
-    g.addnode(2,3);
-    g.addnode(1,3);
+    g.addnode(1,4);
+    g.addnode(5,5);
     vector<int>bfs;
     g.print();
     bfs= g.bfs(0,n);

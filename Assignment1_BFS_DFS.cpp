@@ -65,6 +65,20 @@ class Graph{
         }
     }
 
+    void bfs_rec(vector<int>&vis,queue<int>q){
+        if(q.empty())return;
+        int node=q.front();
+        q.pop();
+        cout<<node<<" ";
+        for(auto nbr:adj[node]){
+            if(vis[nbr]==0){
+                q.push(nbr);
+                vis[nbr]=1;
+            }
+        }
+        bfs_rec(vis,q);
+    }
+
     
 
 

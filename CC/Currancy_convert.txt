@@ -1,0 +1,29 @@
+public class Currancy_converter {
+
+    Decimal convert(Decimal amt,String f,String t){
+        Map<String,Decimal>data=new Map<String,Decimal>{
+             'INR_TO_USD'=>83.15,
+             'USD_TO_INR'=>1/83.15,
+             'INR_TO_EUR'=>0.011,
+             'EUR_TO_INR'=>1/0.011,
+             'USD_TO_EUR'=>0.91,
+             'EUR_TO_USD'=>1/0.91
+        };
+            
+        String str=f+'_TO_'+t;
+        if(!data.containsKey(str)){
+            return -1;
+        }
+        Decimal r=data.get(str);
+        return r*amt;
+            
+    }
+    
+    public static void run(){
+        Currancy_converter c=new Currancy_converter();
+        Decimal amt=100;
+        system.debug(c.convert(amt,'INR','USD'));
+    }
+    
+    
+}

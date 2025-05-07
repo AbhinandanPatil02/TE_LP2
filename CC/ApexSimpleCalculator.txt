@@ -1,0 +1,46 @@
+public class Simple_Calculator {
+
+    public Decimal add(Decimal a,Decimal b){
+        return a+b;
+    }
+    
+    public Decimal sub(Decimal a,Decimal b){
+        return a-b;
+    }
+    
+    public Decimal mul(Decimal a,Decimal b){
+        return a*b;
+    }
+    
+    public Decimal div(Decimal a,Decimal b){
+        return a/b;
+    }
+    
+    public Decimal power(Decimal a,Decimal b){
+        Double n1=a.doubleValue();
+        Double n2=b.doubleValue();
+        Decimal ans= math.pow(n1,n2);
+        return ans;
+    }
+    
+    public Decimal squareroot(Decimal a){
+        return math.sqrt(a);
+    }
+    
+    public Decimal square(Decimal a){
+        return a*a;
+    }
+    
+    Public static void run(){
+        Simple_Calculator c=new Simple_Calculator();
+        Decimal a=10;
+        Decimal b=2;
+        System.debug('Addition : '+c.add(a,b));
+        System.debug('Subtraction : '+c.sub(a,b));
+        System.debug('Multiplication : '+c.mul(a,b));
+        System.debug('Division : '+c.div(a,b));
+        System.debug('Power : '+c.power(a,b));
+        System.debug('Square : '+c.square(a));
+        System.debug('Square root : '+c.squareroot(a));
+    }
+}

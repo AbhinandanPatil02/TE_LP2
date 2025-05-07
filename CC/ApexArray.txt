@@ -1,0 +1,30 @@
+public class Array_Addition {
+	
+    public List <Integer> addition(List<Integer>a,List<Integer>b){
+        List<Integer>ans=new List<Integer>();
+        Integer n=a.size();
+        for(Integer i=0;i<n;i++){
+            Integer sum=a.get(i)+b.get(i);
+            ans.add(sum);
+        }
+ 
+        
+        return ans;
+    }
+    
+    
+    
+    
+    public  Static void run(){
+            Array_Addition o=new Array_Addition();
+        List<Integer>a=new List<Integer>{1,2,3};
+            List<Integer>b=new List<Integer>{3,2,1};
+         
+            System.debug(o.addition(a,b));
+            
+            
+    }
+    
+    
+    
+}

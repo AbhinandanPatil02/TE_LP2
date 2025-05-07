@@ -1,0 +1,27 @@
+public class Compound_Simple_I {
+
+    public Decimal cal_simple_interest(Decimal Rate,Decimal Principal,Integer No_years){
+        Decimal ans=Rate*Principal*No_years/100;
+        return ans;
+    }
+    
+    public Decimal cal_compound_interest(Decimal Rate,Decimal Principal,Integer No_years){
+        Double R=Rate.doubleValue();
+        Double P=Principal.doubleValue();
+        Decimal ans=P*(math.pow((1+(R/100)),No_years));
+        return ans-P;
+    }
+    
+    public static void run(){
+        Compound_Simple_I s=new Compound_Simple_I();
+        Decimal r=8;
+        Decimal p=50000;
+        Integer n=2;
+        System.debug('Calculating Simple Interest');
+        System.debug(s.cal_simple_interest(r,p,n));
+        System.debug('Calculating Compound Interest');
+        System.debug(s.cal_compound_interest(r,p,n));
+        
+    }
+    
+}

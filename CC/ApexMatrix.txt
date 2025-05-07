@@ -68,9 +68,9 @@ public class Matrix_Addition {
         };
             
         //System.debug(m.add(a,b));
-        //System.debug(m.mul(a,b));
+        System.debug(m.mul(a,b));
        
-            System.debug(m.First_Hundred());
+           // System.debug(m.First_Hundred());
         
         
     }

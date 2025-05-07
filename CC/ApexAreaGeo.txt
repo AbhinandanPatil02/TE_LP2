@@ -1,0 +1,27 @@
+public class Cal_Area_Geo {
+	
+    public Decimal triangle(Integer b, Integer h){
+        return 0.5*b*h;
+    }
+    public Decimal square(Integer a){
+        return a*a;
+    }
+    public Decimal rectangle(Integer l,Integer h){
+        return l*h;
+    }
+    
+    public Static void run(){
+        Integer h=5;
+        Integer b=5;
+        Integer a=4;
+        Integer l=8;
+        Cal_Area_Geo o=new Cal_Area_Geo();
+       // Integer b=4;
+        System.debug('Area of Triangle : '+o.triangle(b,h));
+        System.debug('Area of Square : '+o.square(a));
+        System.debug('Area of Rectangle : '+o.rectangle(l,b));
+        
+    }
+    
+    
+}
